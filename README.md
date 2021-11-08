@@ -10,6 +10,12 @@ Otherwise run setup.py.
 
 ## Usage
 
+If installed via setup.py or pip, then should be available as a `git` command.
+
+```
+git template-repo new_repo_url template_repo_url
+```
+
 ```
 usage: git-template-repo [-h] [--new-root NEW_ROOT]
                          [--template-branch TEMPLATE_BRANCH] [--clone-dir CLONE_DIR]
