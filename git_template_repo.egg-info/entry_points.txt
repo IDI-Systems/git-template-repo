@@ -1,0 +1,3 @@
+[console_scripts]
+git-template-repo = git_template_repo:main
+
