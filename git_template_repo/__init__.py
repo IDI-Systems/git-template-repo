@@ -10,13 +10,13 @@ import shutil
 def make_call(*args, error_msg=None, suppress_output=True):
     try:
         output = subprocess.check_output(args)
-        if (not suppress_output):
+        if not suppress_output:
             print(output.decode("utf-8"), end="")
 
         return output
 
     except Exception as e:
-        if (error_msg):
+        if error_msg:
             print(error_msg)
             print("")
         print(e)
@@ -42,7 +42,7 @@ def execute(args):
               suppress_output=False)
 
     local_new = True
-    if ("https://" in new_repo or "http://" in new_repo or "ssh://" in new_repo):
+    if "https://" in new_repo or "http://" in new_repo or "ssh://" in new_repo:
         local_new = False
 
     if local_new:
@@ -56,15 +56,14 @@ def execute(args):
         make_call("git", "init")
 
     else:
-        if(not clone_dir):
+        if not clone_dir:
             folders = os.path.split(new_repo)
-            if (folders):
+            if folders:
                 folder = folders[-1]
                 if ".git" == folder[-4:]:
                     clone_dir = folder[0:-4]
             else:
-                print(
-                    f"ERROR: Cannot determine the appropriate folder name from the URL: {new_repo}")
+                print("ERROR: Cannot determine the appropriate folder name from the URL: {}".format(new_repo))
                 return 1
 
         if no_clone and not os.path.exists(clone_dir):
@@ -81,25 +80,21 @@ def execute(args):
             make_call("git", "clone", new_repo, clone_dir)
             os.chdir(clone_dir)
 
-    if(int(make_call("git", "rev-list", "--all", "--count"))):
-        print(
-            "ERROR: Can only initialize a template on an empty repository with no commits.")
+    if int(make_call("git", "rev-list", "--all", "--count")):
+        print("ERROR: Can only initialize a template on an empty repository with no commits.")
         return 1
 
     make_call("git", "remote", "add", "template", template_repo)
     make_call("git", "fetch", "template")
-    make_call("git", "checkout", "--orphan", new_root_branch,
-              f"template/{template_branch}")
+    make_call("git", "checkout", "--orphan", new_root_branch, "template/{}".format(template_branch))
 
     make_call("git", "add", "-A")
-    make_call("git", "commit", "-m",
-              f'Template initialization from {template_repo}.')
+    make_call("git", "commit", "-m", "Template initialization from {}.".format(template_repo))
     make_call("git", "remote", "rm", "template")
-    if (push_origin and not local_new and not no_clone):
-        if (origin_name != "origin"):
+    if push_origin and not local_new and not no_clone:
+        if origin_name != "origin":
             make_call("git", "remote", "add", origin_name, new_repo)
-        make_call("git", "push", origin_name,
-                  f"{new_root_branch}:{new_root_branch}")
+        make_call("git", "push", origin_name, "{}:{}".format(new_root_branch, new_root_branch))
     else:
         if push_origin and no_clone:
             print("WARNING: Cannot push when flag --no-clone is set as state of remote repository in which template "
@@ -120,6 +115,7 @@ def onerror(func, path, exc_info):
     Usage : ``shutil.rmtree(path, onerror=onerror)``
     """
     import stat
+
     # Is the error an access error?
     if not os.access(path, os.W_OK):
         os.chmod(path, stat.S_IWUSR)
