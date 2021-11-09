@@ -63,7 +63,7 @@ def execute(args):
                 if ".git" == folder[-4:]:
                     clone_dir = folder[0:-4]
             else:
-                print("ERROR: Cannot determine the appropriate folder name from the URL: {}".format(new_repo))
+                print(f"ERROR: Cannot determine the appropriate folder name from the URL: {new_repo}")
                 return 1
 
         if no_clone and not os.path.exists(clone_dir):
@@ -86,15 +86,15 @@ def execute(args):
 
     make_call("git", "remote", "add", "template", template_repo)
     make_call("git", "fetch", "template")
-    make_call("git", "checkout", "--orphan", new_root_branch, "template/{}".format(template_branch))
+    make_call("git", "checkout", "--orphan", new_root_branch, f"template/{template_branch}")
 
     make_call("git", "add", "-A")
-    make_call("git", "commit", "-m", "Template initialization from {}.".format(template_repo))
+    make_call("git", "commit", "-m", f"Template initialization from {template_repo}.")
     make_call("git", "remote", "rm", "template")
     if push_origin and not local_new and not no_clone:
         if origin_name != "origin":
             make_call("git", "remote", "add", origin_name, new_repo)
-        make_call("git", "push", origin_name, "{}:{}".format(new_root_branch, new_root_branch))
+        make_call("git", "push", origin_name, f"{new_root_branch}:{new_root_branch}")
     else:
         if push_origin and no_clone:
             print("WARNING: Cannot push when flag --no-clone is set as state of remote repository in which template "

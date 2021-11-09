@@ -15,41 +15,14 @@ before_script:
   - virtualenv venv
   - source venv/bin/activate
 
-test-py35:
-  image: python:3.5
+test:
+  parallel:
+    matrix:
+      - VERSION: [3.6, 3.7, 3.8, 3.9, 3.10]
+  image: python:$VERSION
   script:
     - pip install tox
-    - tox -e py35,flake8
-
-test-py36:
-  image: python:3.6
-  script:
-    - pip install tox
-    - tox -e py36,flake8
-
-test-py37:
-  image: python:3.7
-  script:
-    - pip install tox
-    - tox -e py37,flake8
-
-test-py38:
-  image: python:3.8
-  script:
-    - pip install tox
-    - tox -e py38,flake8
-
-test-py39:
-  image: python:3.9
-  script:
-    - pip install tox
-    - tox -e py39,flake8
-
-test-py310:
-  image: python:3.10
-  script:
-    - pip install tox
-    - tox -e py310,flake8
+    - tox -e py${VERSION//./},flake8
 
 run:
   script:
