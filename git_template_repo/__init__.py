@@ -4,7 +4,6 @@ import subprocess
 import os
 import argparse
 import sys
-import re
 import shutil
 
 
@@ -37,7 +36,11 @@ def execute(args):
 
     template_branch = args.template_branch
 
-    make_call("git", "--version", error_msg="ERROR: Could not find git on the path, please make sure git is installed and available in the path environment.", suppress_output=False)
+    make_call("git", "--version",
+              error_msg=("ERROR: Could not find git on the path, please make sure git is installed and available in "
+                         "the path environment."),
+              suppress_output=False)
+
     local_new = True
     if ("https://" in new_repo or "http://" in new_repo or "ssh://" in new_repo):
         local_new = False
@@ -99,7 +102,8 @@ def execute(args):
                   f"{new_root_branch}:{new_root_branch}")
     else:
         if push_origin and no_clone:
-            print("WARNING: Cannot push when flag --no-clone is set as state of remote repository in which template was initialized is unknown.")
+            print("WARNING: Cannot push when flag --no-clone is set as state of remote repository in which template "
+                  "was initialized is unknown.")
 
     return 0
 
@@ -124,10 +128,10 @@ def onerror(func, path, exc_info):
         raise
 
 
-
 def main():
     parser = argparse.ArgumentParser(prog="git-template-repo",
-        description='Git Template Script - Populates another repository with a commit from an existing repository.')
+                                     description=("Git Template Script - Populates another repository with a commit "
+                                                  "from an existing repository."))
 
     parser.add_argument("new_repo", help="The URL or file location of the new repository you wish to initialize "
                         "the template in. Note: if the path is a remote repository you can specify "
@@ -137,9 +141,9 @@ def main():
     parser.add_argument(
         "template_repo", help="The local or remote repository in which to clone the template from.")
     parser.add_argument("--new-root", default="master",
-                        help="The name of the root branch created in the new repository. Default=%(default)s")
+                        help="The name of the root branch created in the new repository (default: %(default)s).")
     parser.add_argument("--template-branch", default="master",
-                        help="The name of the branch to clone from the template repository. Default=%(default)s")
+                        help="The name of the branch to clone from the template repository (default: %(default)s).")
     parser.add_argument("--clone-dir", default="",
                         help="Name of folder to clone into, by default will be the name of the remote repository. Redundant if the new_repo is local.")
     parser.add_argument("--no-clone",
@@ -149,7 +153,7 @@ def main():
     parser.add_argument("--push",
                         action="store_true", help="If set, once completed this will push the changes to the new remote repository.")
     parser.add_argument("--origin", default="origin",
-                        help="Name of origin remote to push to if --push is set. Default=%(default)s")
+                        help="Name of origin remote to push to if --push is set (default: %(default)s).")
     parser.add_argument("--clean-up",
                         action="store_true", help="If set, will remove repository. Useful for automated scripts that are simply "
                         "applying a template during CI or some other automated task.")
@@ -167,6 +171,7 @@ def main():
             os.chdir(cwdir)
             shutil.rmtree(cleanup_dir, onerror=onerror)
     sys.exit(ret)
+
 
 if __name__ == "__main__":
     main()

@@ -13,10 +13,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/idi-systems/git-template-repo",
     packages=setuptools.find_packages(),
-    entry_points = {
+    entry_points={
         'console_scripts': ['git-template-repo=git_template_repo:main']
     },
-    classifiers=(
+    classifiers=[
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
@@ -24,7 +24,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Development Status :: 4 - Beta",
+        "Topic :: Software Development :: Version Control :: Git",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-    ),
+    ],
 )
