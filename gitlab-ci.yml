@@ -1,0 +1,65 @@
+image: python:latest
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+    - .tox/
+
+before_script:
+  - python -V  # Print out python version for debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
+test-py35:
+  image: python:3.5
+  script:
+    - pip install tox
+    - tox -e py35
+
+test-py36:
+  image: python:3.6
+  script:
+    - pip install tox
+    - tox -e py36
+
+test-py37:
+  image: python:3.7
+  script:
+    - pip install tox
+    - tox -e py37
+
+test-py38:
+  image: python:3.8
+  script:
+    - pip install tox
+    - tox -e py38
+
+test-py39:
+  image: python:3.9
+  script:
+    - pip install tox
+    - tox -e py39
+
+test-py310:
+  image: python:3.10
+  script:
+    - pip install tox
+    - tox -e py310
+
+test-flake8:
+  script:
+    - pip install tox
+    - tox -e flake8
+
+run:
+  script:
+    - pip install wheel
+    - python setup.py bdist_wheel
+  artifacts:
+    paths:
+      - dist/*.whl
