@@ -19,42 +19,37 @@ test-py35:
   image: python:3.5
   script:
     - pip install tox
-    - tox -e py35
+    - tox -e py35,flake8
 
 test-py36:
   image: python:3.6
   script:
     - pip install tox
-    - tox -e py36
+    - tox -e py36,flake8
 
 test-py37:
   image: python:3.7
   script:
     - pip install tox
-    - tox -e py37
+    - tox -e py37,flake8
 
 test-py38:
   image: python:3.8
   script:
     - pip install tox
-    - tox -e py38
+    - tox -e py38,flake8
 
 test-py39:
   image: python:3.9
   script:
     - pip install tox
-    - tox -e py39
+    - tox -e py39,flake8
 
 test-py310:
   image: python:3.10
   script:
     - pip install tox
-    - tox -e py310
-
-test-flake8:
-  script:
-    - pip install tox
-    - tox -e flake8
+    - tox -e py310,flake8
 
 run:
   script:
