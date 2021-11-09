@@ -18,7 +18,7 @@ before_script:
 test:
   parallel:
     matrix:
-      - VERSION: [3.6, 3.7, 3.8, 3.9, 3.10]
+      - VERSION: ["3.6", "3.7", "3.8", "3.9", "3.10"]
   image: python:$VERSION
   script:
     - pip install tox
