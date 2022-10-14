@@ -1,6 +1,6 @@
 import unittest
 
-import git_template_repo
+from git_template_repo import git_template_repo
 
 
 class UnitTests(unittest.TestCase):

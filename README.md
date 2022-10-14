@@ -85,3 +85,14 @@ $ pip install -e .
 ```
 $ hatch shell
 ```
+
+### Tests
+
+Tests can be ran with [pytest](https://docs.pytest.org/en/7.1.x/). Hatch scripts are included as well and will run `pytest` as well as `flake8`.
+
+```
+# Current Python version
+$ hatch run test
+# All Python versions
+$ hatch run test:test
+```
