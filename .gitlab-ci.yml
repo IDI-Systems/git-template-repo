@@ -2,32 +2,29 @@ image: python:latest
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  HATCH_CACHE_DIR: "$CI_PROJECT_DIR/.cache/hatch"
 
 cache:
   paths:
     - .cache/pip
-    - venv/
-    - .tox/
+    - .cache/hatch
+    - .pytest_cache
 
 before_script:
   - python -V  # Print out python version for debugging
-  - pip install virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
+  - pip install hatch
 
 test:
   parallel:
     matrix:
-      - VERSION: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+      - VERSION: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11-rc"]
   image: python:$VERSION
   script:
-    - pip install tox
-    - tox -e py${VERSION//./},flake8
+    - hatch run test:test
 
 run:
   script:
-    - pip install wheel
-    - python setup.py bdist_wheel
+    - hatch build
   artifacts:
     paths:
-      - dist/*.whl
+      - dist
