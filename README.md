@@ -2,15 +2,26 @@
 
 A python script that automates a 30-second task but is annoying to remember the exact steps.
 
-## Install
 
-Eventually on PyPi.
+## Installation
 
-Otherwise run setup.py.
+git-template-repo is distributed on [PyPI](https://pypi.org/).
+
+```
+$ pip install git-template-repo
+```
+_Note: Add pip installation directory to `PATH` environmental variable to use it directly._
+
+Alternatively install from source in this directory
+
+```
+$ pip install .
+```
+
 
 ## Usage
 
-If installed via setup.py or pip, then should be available as a `git` command.
+If installed via `pip`, then should be available as a `git` command.
 
 ```
 git template-repo new_repo_url template_repo_url
@@ -57,4 +68,20 @@ optional arguments:
   --clean-up            If set, will remove repository. Useful for automated scripts
                         that are simply applying a template during CI or some other
                         automated task.
+  -v, --version         show version
+```
+
+
+## Development
+
+git-template-repo uses [Hatchling](https://hatch.pypa.io/latest/) as a build backend and [tox](https://tox.wiki/en/latest/) for automation and [flake8](https://flake8.pycqa.org/en/latest/) as a style guide.
+
+```
+$ pip install -e .
+```
+
+[Hatch](https://hatch.pypa.io/latest/) is the primary project manager of choice, but any project adhering to PEP 621 (`pyproject.toml` specification) can be used.
+
+```
+$ hatch shell
 ```

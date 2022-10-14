@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.11", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "git-template-repo"
+authors = [
+    { name="IDI-Systems", email="contact@idi-systems.com" },
+]
+description = "A git command for creating a git repository from another repository as a template."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.6"
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Development Status :: 4 - Beta",
+]
+dependencies = [
+]
+dynamic = [
+    "version",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/IDI-Systems/git-template-repo"
+"Bug Tracker" = "https://github.com/IDI-Systems/git-template-repo"
+
+[project.scripts]
+git-template-repo = "git_template_repo.git_template_repo:main"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github",
+    ".gitlab-ci.yml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["git_template_repo"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "git_template_repo/_version.py"
