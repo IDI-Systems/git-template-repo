@@ -1,5 +1,8 @@
 # git-template-repo
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/IDI-Systems/git-template-repo/Python)](https://github.com/IDI-Systems/git-template-repo/actions?query=workflow%3A%22Python%22)
+[![PyPI](https://img.shields.io/pypi/v/git-template-repo)](https://pypi.org/project/git-template-repo)
+
 A python script that automates a 30-second task but is annoying to remember the exact steps.
 
 
