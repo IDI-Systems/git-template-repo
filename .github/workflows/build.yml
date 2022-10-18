@@ -12,9 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Ensure latest pip
-      run: python -m pip install --upgrade pip
-
     - name: Install Hatch
       run: pip install hatch
 
@@ -36,9 +33,6 @@ jobs:
       with:
         name: artifacts
         path: dist
-
-    - name: Ensure latest pip
-      run: python -m pip install --upgrade pip
 
     - name: Install Hatch
       run: pip install hatch
