@@ -37,10 +37,12 @@ dynamic = [
 [project.scripts]
 git-template-repo = "git_template_repo.git_template_repo:main"
 
+
+## Hatch
+
 [tool.hatch.build.targets.sdist]
 exclude = [
   "/.github",
-  ".gitlab-ci.yml",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -52,14 +54,30 @@ source = "vcs"
 [tool.hatch.build.hooks.vcs]
 version-file = "git_template_repo/_version.py"
 
+## Hatch environments
+
 [tool.hatch.envs.default]
 dependencies = [
   "pytest",
-  "flake8",
 ]
 
 [tool.hatch.envs.default.scripts]
-test = "pytest {args} && flake8 git_template_repo tests"
+full = "pytest {args:tests}"
 
 [[tool.hatch.envs.test.matrix]]
-python = ["36", "37", "38", "39", "310", "311"]
+python = ["37", "38", "39", "310", "311"]
+
+
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+  "flake8",
+]
+
+[tool.hatch.envs.lint.scripts]
+style = [
+  "flake8 {args:.}",
+]
+all = [
+  "style",
+]
