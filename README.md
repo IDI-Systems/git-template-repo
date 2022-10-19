@@ -93,11 +93,14 @@ $ hatch shell
 
 ### Tests
 
-Tests can be ran with [pytest](https://docs.pytest.org/en/7.1.x/). Hatch scripts are included as well and will run `pytest` as well as `flake8`.
+Tests can be ran with [pytest](https://docs.pytest.org/). Hatch scripts are included for linting and testing.
 
 ```
-# Current Python version
-$ hatch run test
-# All Python versions
-$ hatch run test:test
+# Lint
+$ hatch run lint:all
+
+# Test with current Python version
+$ hatch run full
+# Test with all Python versions
+$ hatch run test:full
 ```
