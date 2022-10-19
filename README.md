@@ -1,9 +1,11 @@
 # git-template-repo
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/IDI-Systems/git-template-repo/Python)](https://github.com/IDI-Systems/git-template-repo/actions?query=workflow%3A%22Python%22)
-[![PyPI](https://img.shields.io/pypi/v/git-template-repo)](https://pypi.org/project/git-template-repo)
+[![CI - Test](https://github.com/IDI-Systems/git-template-repo/actions/workflows/test.yml/badge.svg)](https://github.com/IDI-Systems/git-template-repo/actions/workflows/test.yml)
+[![CI - Build](https://github.com/IDI-Systems/git-template-repo/actions/workflows/build.yml/badge.svg)](https://github.com/IDI-Systems/git-template-repo/actions/workflows/build.yml)
+[![PyPI - Version](https://img.shields.io/pypi/v/git-template-repo.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/git-template-repo)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/git-template-repo.svg?logo=python&label=Python&logoColor=gold)](https://pypi.org/project/git-template-repo)
 
-A python script that automates a 30-second task but is annoying to remember the exact steps.
+A Python script that automates a 30-second task but is annoying to remember the exact steps.
 
 
 ## Installation
