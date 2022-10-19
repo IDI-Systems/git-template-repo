@@ -11,6 +11,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Install Hatch
       run: pip install hatch
@@ -37,5 +39,8 @@ jobs:
     - name: Install Hatch
       run: pip install hatch
 
-    - name: Publish to PyPI Test
-      run: hatch publish -r test -u __token__ # TODO -r main
+    - name: Publish to PyPI
+      run: hatch publish
+      env:
+        HATCH_INDEX_USER: ${{ secrets.HATCH_INDEX_USER }}
+        HATCH_INDEX_AUTH: ${{ secrets.HATCH_INDEX_AUTH }}
