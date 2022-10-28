@@ -70,7 +70,7 @@ def execute(args):
             os.makedirs(clone_dir)
         else:
             if os.path.exists(clone_dir):
-                print("Repository directory already exists.")
+                print("ERROR: Repository directory already exists.")
                 return 1
 
         if no_clone:

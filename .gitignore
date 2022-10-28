@@ -141,3 +141,8 @@ cython_debug/
 ## Hatchling
 # Shipped version
 _version.py
+
+
+## Tests
+test-repo/
+test-dir/
