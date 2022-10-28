@@ -2,6 +2,7 @@ import argparse
 import os
 import shutil
 import subprocess
+import sys
 
 from ._version import version as __version__
 
@@ -171,8 +172,10 @@ def main():
             os.chdir(cwdir)
             shutil.rmtree(cleanup_dir, onerror=onerror)
 
+    os.chdir(cwdir)
+
     return ret
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
