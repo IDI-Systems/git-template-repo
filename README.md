@@ -7,6 +7,14 @@
 
 A Python script that automates a 30-second task but is annoying to remember the exact steps.
 
+Template repositories are very useful for quick-starting new projects and ensuring they start with the appropriate configuration for your team. Git services such as GitHub and GitLab offer "template repositories" that let users generate new repositories from a specified template. git-template-repo brings this feature to command-line git, allowing creation of new repositories from any accessible repository.
+
+Some use cases include:
+- Template repositories locally.
+- Template repositories on free versions of GitLab or other git services.
+- Template repositories in automated processes.
+- Template repositories from submodules.
+
 
 ## Installation
 
