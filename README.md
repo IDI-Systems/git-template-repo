@@ -79,7 +79,7 @@ optional arguments:
 
 ## Development
 
-git-template-repo uses [Hatchling](https://hatch.pypa.io/latest/) as a build backend and [tox](https://tox.wiki/en/latest/) for automation and [flake8](https://flake8.pycqa.org/en/latest/) as a style guide.
+git-template-repo uses [Hatchling](https://hatch.pypa.io/latest/) as a build backend and [flake8](https://flake8.pycqa.org/en/latest/) as a style guide.
 
 ```
 $ pip install -e .
