@@ -1,4 +1,3 @@
-import os
 import unittest
 
 from git_template_repo import git_template_repo
