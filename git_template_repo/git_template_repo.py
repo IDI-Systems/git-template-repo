@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -21,6 +22,11 @@ def make_call(*args, error_msg=None, suppress_output=True):
             print("")
         print(e)
         raise e
+
+
+def is_sha1(sha):
+    match = re.match(r'\b[0-9a-f]{40}\b', sha)
+    return match is not None
 
 
 def execute(args):
@@ -85,8 +91,13 @@ def execute(args):
         return 1
 
     make_call("git", "remote", "add", "template", template_repo)
-    make_call("git", "fetch", "template")
-    make_call("git", "checkout", "--orphan", new_root_branch, f"template/{template_branch}")
+
+    if is_sha1(template_branch):
+        make_call("git", "fetch", "template", template_branch)
+        make_call("git", "checkout", "--orphan", new_root_branch, template_branch)
+    else:
+        make_call("git", "fetch", "template")
+        make_call("git", "checkout", "--orphan", new_root_branch, f"template/{template_branch}")
 
     make_call("git", "add", "-A")
     make_call("git", "commit", "-m", f"Template initialization from {template_repo}.")
@@ -125,34 +136,40 @@ def onerror(func, path, exc_info):
 
 
 def main():
-    parser = argparse.ArgumentParser(prog="git-template-repo",
-                                     description=("Git Template Script - Populates another repository with a commit "
-                                                  "from an existing repository."))
+    parser = argparse.ArgumentParser(
+        prog="git-template-repo",
+        description=("Git Template Script - Populates another repository with a commit from an existing repository."))
 
-    parser.add_argument("new_repo", help="The URL or file location of the new repository you wish to initialize "
-                        "the template in. Note: if the path is a remote repository you can specify "
-                        "the name of the local folder to clone into with --clone-dir, if the path "
-                        "is local, then this is the folder where the repo will be initialized and "
-                        "--clone-dir is redundant.")
     parser.add_argument(
-        "template_repo", help="The local or remote repository in which to clone the template from.")
-    parser.add_argument("--new-root", default="master",
-                        help="The name of the root branch created in the new repository (default: %(default)s).")
-    parser.add_argument("--template-branch", default="master",
-                        help="The name of the branch to clone from the template repository (default: %(default)s).")
-    parser.add_argument("--clone-dir", default="",
-                        help="Name of folder to clone into, by default will be the name of the remote repository. Redundant if the new_repo is local.")
-    parser.add_argument("--no-clone",
-                        action="store_true", help="If set and the new_repo is remote this will not clone the remote path specified as the "
-                        "template destination, but will initialize a new repository. Still follows all folder naming rules of --clone-dir. If set "
-                        "--push has no effect and will not push due to unknown state of remote repository.")
-    parser.add_argument("--push",
-                        action="store_true", help="If set, once completed this will push the changes to the new remote repository.")
-    parser.add_argument("--origin", default="origin",
-                        help="Name of origin remote to push to if --push is set (default: %(default)s).")
-    parser.add_argument("--clean-up",
-                        action="store_true", help="If set, will remove repository. Useful for automated scripts that are simply "
-                        "applying a template during CI or some other automated task.")
+        "new_repo", type=str,
+        help="URL or file location of the new repository you wish to initialize the template in. Note: if the path is a remote repository you can specify the "
+             "name of the local folder to clone into with --clone-dir, if the path is local, then this is the folder where the repo will be initialized and "
+             "--clone-dir is redundant.")
+    parser.add_argument(
+        "template_repo", type=str,
+        help="Local or remote repository in which to clone the template from.")
+    parser.add_argument(
+        "--new-root", default="master", type=str,
+        help="Name of the root branch created in the new repository (default: %(default)s).")
+    parser.add_argument(
+        "--template-branch", default="master", type=str,
+        help="Name of the branch or SHA1 of the commit to clone from the template repository (default: %(default)s).")
+    parser.add_argument(
+        "--clone-dir", default="", type=str,
+        help="Name of folder to clone into, by default will be the name of the remote repository. Redundant if the new_repo is local.")
+    parser.add_argument(
+        "--no-clone", action="store_true",
+        help="If set and the new_repo is remote this will not clone the remote path specified as the template destination, but will initialize a new repository"
+             ". Still follows all folder naming rules of --clone-dir. If set --push has no effect and will not push due to unknown state of remote repository.")
+    parser.add_argument(
+        "--push", action="store_true",
+        help="If set, once completed this will push the changes to the new remote repository.")
+    parser.add_argument(
+        "--origin", default="origin", type=str,
+        help="Name of origin remote to push to if --push is set (default: %(default)s).")
+    parser.add_argument(
+        "--clean-up", action="store_true",
+        help="If set, will remove repository. Useful for automated scripts that are simply applying a template during CI or some other automated task.")
     parser.add_argument("-v", "--version", action="store_true", help="show version")
 
     args = parser.parse_args()

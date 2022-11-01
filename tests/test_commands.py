@@ -1,3 +1,4 @@
+import os
 import shutil
 import sys
 import unittest
@@ -25,10 +26,6 @@ class UnitTests(unittest.TestCase):
         if path.is_dir():
             raise AssertionError(f"Directory exist: {path}")
 
-    def test_git_call(self):
-        output = git_template_repo.make_call("git", "--version")
-        self.assertIn(b"git version ", output)
-
     @unittest.skipUnless(sys.platform.startswith("win"), "requires Windows")
     def test_rmtree_onerror(self):
         TEST_DIR.mkdir()
@@ -49,8 +46,18 @@ class UnitTests(unittest.TestCase):
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR / ".git")
 
-    def test_template_from_local(self):
+    def test_template_from_local_branch(self):
+        if os.environ.get("CI", False):
+            git_template_repo.make_call("git", "checkout", "-b", "master")
+
         sys.argv = ["git-template-repo", str(TEST_REPO_DIR), str(Path.cwd())]
+        git_template_repo.main()
+        self.assertIsDir(TEST_REPO_DIR)
+        self.assertIsDir(TEST_REPO_DIR / ".git")
+
+    def test_template_from_local_commit(self):
+        sha = git_template_repo.make_call("git", "rev-parse", "--verify", "HEAD").decode()[:-1]
+        sys.argv = ["git-template-repo", str(TEST_REPO_DIR), str(Path.cwd()), "--template-branch", sha]
         git_template_repo.main()
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR / ".git")
