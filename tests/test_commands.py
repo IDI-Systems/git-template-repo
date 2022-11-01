@@ -42,7 +42,8 @@ class UnitTests(unittest.TestCase):
 
     def test_template_from_url(self):
         sys.argv = ["git-template-repo", str(TEST_REPO_DIR), TEST_REPO_URL]
-        git_template_repo.main()
+        ret = git_template_repo.main()
+        self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR / ".git")
 
@@ -51,14 +52,16 @@ class UnitTests(unittest.TestCase):
             git_template_repo.make_call("git", "checkout", "-b", "master")
 
         sys.argv = ["git-template-repo", str(TEST_REPO_DIR), str(Path.cwd())]
-        git_template_repo.main()
+        ret = git_template_repo.main()
+        self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR / ".git")
 
     def test_template_from_local_commit(self):
         sha = git_template_repo.make_call("git", "rev-parse", "--verify", "HEAD").decode()[:-1]
         sys.argv = ["git-template-repo", str(TEST_REPO_DIR), str(Path.cwd()), "--template-branch", sha]
-        git_template_repo.main()
+        ret = git_template_repo.main()
+        self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR / ".git")
 
