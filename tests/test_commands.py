@@ -49,9 +49,9 @@ class UnitTests(unittest.TestCase):
 
     def test_template_from_local_branch(self):
         if os.environ.get("CI", False):
-            git_template_repo.make_call("git", "checkout", "-b", "master")
+            git_template_repo.make_call("git", "checkout", "-b", "test-master")
 
-        sys.argv = ["git-template-repo", str(TEST_REPO_DIR), str(Path.cwd())]
+        sys.argv = ["git-template-repo", str(TEST_REPO_DIR), str(Path.cwd()), "--template-branch", "test-master"]
         ret = git_template_repo.main()
         self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
