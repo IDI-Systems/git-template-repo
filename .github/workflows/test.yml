@@ -37,4 +37,7 @@ jobs:
       run: hatch run lint:all
 
     - name: Test
-      run: hatch run full
+      run: |
+        git config --global user.email "test@idi-systems.com"
+        git config --global user.name "IDI Test"
+        hatch run full
