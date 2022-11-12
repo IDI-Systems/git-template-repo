@@ -47,7 +47,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR_GIT)
-        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", TEST_REPO_DIR_GIT, "rev-list", "--all", "--count")), 1)
+        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_REPO_DIR_GIT), "rev-list", "--all", "--count")), 1)
 
     def test_template_from_local_branch(self):
         ci = os.environ.get("CI", False)
@@ -59,7 +59,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR_GIT)
-        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", TEST_REPO_DIR_GIT, "rev-list", "--all", "--count")), 1)
+        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_REPO_DIR_GIT), "rev-list", "--all", "--count")), 1)
 
     def test_template_from_local_commit(self):
         sha = git_template_repo.make_call("git", "rev-parse", "--verify", "HEAD").decode()[:-1]
@@ -68,7 +68,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR_GIT)
-        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", TEST_REPO_DIR_GIT, "rev-list", "--all", "--count")), 1)
+        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_REPO_DIR_GIT), "rev-list", "--all", "--count")), 1)
 
     def test_template_on_existing_dir(self):
         TEST_REPO_DIR.mkdir()
