@@ -10,6 +10,7 @@ TEST_REPO_DIR = Path("./test-repo")
 TEST_REPO_URL = "https://github.com/IDI-Systems/git-template-repo"
 TEST_REPO_DIR_GIT = TEST_REPO_DIR / ".git"
 TEST_DIR = Path("./test-dir")
+TEST_DIR_GIT = TEST_DIR / ".git"
 
 
 class UnitTests(unittest.TestCase):
@@ -69,6 +70,28 @@ class UnitTests(unittest.TestCase):
         self.assertIsDir(TEST_REPO_DIR)
         self.assertIsDir(TEST_REPO_DIR_GIT)
         self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_REPO_DIR_GIT), "rev-list", "--all", "--count")), 1)
+
+    def test_template_push(self):
+        git_template_repo.make_call("git", "init", str(TEST_DIR), "--bare")
+        self.assertIsDir(TEST_DIR)
+
+        sys.argv = ["git-template-repo", str(TEST_DIR), TEST_REPO_URL, "--push", "--clone-dir", str(TEST_REPO_DIR)]
+        ret = git_template_repo.main()
+        self.assertEqual(ret, 0)
+        self.assertIsDir(TEST_REPO_DIR)
+        self.assertIsDir(TEST_REPO_DIR_GIT)
+        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_DIR), "rev-list", "--all", "--count")), 1)
+
+    def test_template_push_cleanup(self):
+        git_template_repo.make_call("git", "init", str(TEST_DIR), "--bare")
+        self.assertIsDir(TEST_DIR)
+
+        sys.argv = ["git-template-repo", str(TEST_DIR), TEST_REPO_URL, "--push", "--clone-dir", str(TEST_REPO_DIR), "--clean-up"]
+        ret = git_template_repo.main()
+        self.assertEqual(ret, 0)
+        self.assertIsNotDir(TEST_REPO_DIR)
+        self.assertIsNotDir(TEST_REPO_DIR_GIT)
+        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_DIR), "rev-list", "--all", "--count")), 1)
 
     def test_template_on_existing_dir(self):
         TEST_REPO_DIR.mkdir()

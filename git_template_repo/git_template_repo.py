@@ -48,7 +48,7 @@ def execute(args):
               suppress_output=False)
 
     local_new = True
-    if "https://" in new_repo or "http://" in new_repo or "ssh://" in new_repo:
+    if push_origin or "https://" in new_repo or "http://" in new_repo or "ssh://" in new_repo:
         local_new = False
 
     if local_new:
@@ -144,7 +144,7 @@ def main():
         "new_repo", type=str,
         help="URL or file location of the new repository you wish to initialize the template in. Note: if the path is a remote repository you can specify the "
              "name of the local folder to clone into with --clone-dir, if the path is local, then this is the folder where the repo will be initialized and "
-             "--clone-dir is redundant.")
+             "--clone-dir is redundant. If --push is set and the path is local, it is assumed to be a git repository and is handled as a remote repository.")
     parser.add_argument(
         "template_repo", type=str,
         help="Local or remote repository in which to clone the template from.")
@@ -163,7 +163,7 @@ def main():
              ". Still follows all folder naming rules of --clone-dir. If set --push has no effect and will not push due to unknown state of remote repository.")
     parser.add_argument(
         "--push", action="store_true",
-        help="If set, once completed this will push the changes to the new remote repository.")
+        help="If set, once completed this will push the changes to the new remote repository. If set new_repo is assumed to be a git repository.")
     parser.add_argument(
         "--origin", default="origin", type=str,
         help="Name of origin remote to push to if --push is set (default: %(default)s).")
