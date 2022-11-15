@@ -65,9 +65,9 @@ def execute(args):
         if not clone_dir:
             folders = os.path.split(new_repo)
             if folders:
-                folder = folders[-1]
-                if ".git" == folder[-4:]:
-                    clone_dir = folder[0:-4]
+                clone_dir = folders[-1]
+                if ".git" == clone_dir[-4:]:
+                    clone_dir = clone_dir[0:-4]
             else:
                 print(f"ERROR: Cannot determine the appropriate folder name from the URL: {new_repo}")
                 return 1
