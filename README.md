@@ -36,51 +36,64 @@ $ pip install .
 
 If installed via `pip`, then should be available as a `git` command.
 
-```
+```sh
 git template-repo new_repo_url template_repo_url
+
+# Template remote repository
+$ git template-repo jsonjsc-new https://github.com/IDI-Systems/jsonjsc
+$ git template-repo jsonjsc-new https://gitlab.com/gitlab-org/gitlab-runner
+# from different remote repository branch
+$ git template-repo jsonjsc-new https://github.com/pypa/pip --template-branch main
+
+# Template local repository
+$ git template-repo jsonjsc-new ../jsonjsc
+# from specific local repository commit
+$ git template-repo jsonjsc-new ../jsonjsc --template-branch f0474566d698d6d70fe1c9b7cfd63a20f3a90aa7
+
+# Template remote repository (jsonjsc) into another remote repository (jsonjsc-new, local clone will be created)
+$ git template-repo https://github.com/IDI-Systems/jsonjsc-new https://github.com/IDI-Systems/jsonjsc
+# with named local clone (new-jsonjsc, otherwise remote name is used)
+$ git template-repo https://github.com/IDI-Systems/jsonjsc-new https://github.com/IDI-Systems/jsonjsc --clone-dir new-jsonjsc
+# with push (back to target remote repository)
+$ git template-repo https://github.com/IDI-Systems/jsonjsc-new https://github.com/IDI-Systems/jsonjsc --push
 ```
 
 ```
 usage: git-template-repo [-h] [--new-root NEW_ROOT]
                          [--template-branch TEMPLATE_BRANCH] [--clone-dir CLONE_DIR]
-                         [--no-clone] [--push] [--origin ORIGIN] [--clean-up]
+                         [--no-clone] [--push] [--origin ORIGIN] [--clean-up] [-v]
                          new_repo template_repo
 
-Git Template Script - Populates another repository with a commit from an existing
-repository.
+Git Template Script - Populates another repository with a commit from an existing repository.
 
 positional arguments:
-  new_repo              The URL or file location of the new repository you wish to
-                        initialize the template in. Note: if the path is a remote
-                        repository you can specify the name of the local folder to
-                        clone into with --clone-dir, if the path is local, then this
-                        is the folder where the repo will be initialized and
-                        --clone-dir is redundant.
-  template_repo         The local or remote repository in which to clone the
-                        template from.
+  new_repo              URL or file location of the new repository you wish to initialize the
+                        template in. Note: if the path is a remote repository you can specify
+                        the name of the local folder to clone into with --clone-dir, if the path
+                        is local, then this is the folder where the repo will be initialized and
+                        --clone-dir is redundant. If --push is set and the path is local, it is
+                        assumed to be a git repository and is handled as a remote repository.
+  template_repo         Local or remote repository in which to clone the template from.
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
-  --new-root NEW_ROOT   The name of the root branch created in the new repository.
-                        Default=master
+  --new-root NEW_ROOT   Name of the root branch created in the new repository (default: master).
   --template-branch TEMPLATE_BRANCH
-                        The name of the branch to clone from the template
-                        repository. Default=master
+                        Name of the branch or SHA1 of the commit to clone from the template
+                        repository (default: master).
   --clone-dir CLONE_DIR
-                        Name of folder to clone into, by default will be the name of
-                        the remote repository. Redundant if the new_repo is local.
-  --no-clone            If set and the new_repo is remote this will not clone the
-                        remote path specified as the template destination, but will
-                        initialize a new repository. Still follows all folder naming
-                        rules of --clone-dir. If set --push has no effect and will
-                        not push due to unknown state of remote repository.
-  --push                If set, once completed this will push the changes to the new
+                        Name of folder to clone into, by default will be the name of the remote
+                        repository. Redundant if the new_repo is local.
+  --no-clone            If set and the new_repo is remote this will not clone the remote path
+                        specified as the template destination, but will initialize a new
+                        repository. Still follows all folder naming rules of --clone-dir.
+                        If set --push has no effect and will not push due to unknown state of
                         remote repository.
-  --origin ORIGIN       Name of origin remote to push to if --push is set.
-                        Default=origin
-  --clean-up            If set, will remove repository. Useful for automated scripts
-                        that are simply applying a template during CI or some other
-                        automated task.
+  --push                If set, once completed this will push the changes to the new remote
+                        repository. If set new_repo is assumed to be a git repository.
+  --origin ORIGIN       Name of origin remote to push to if --push is set (default: origin).
+  --clean-up            If set, will remove repository. Useful for automated scripts that are
+                        simply applying a template during CI or some other automated task.
   -v, --version         show version
 ```
 
