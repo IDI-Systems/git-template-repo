@@ -28,6 +28,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    environment: release
     needs: [build]
 
     steps:
@@ -41,6 +42,3 @@ jobs:
 
     - name: Publish to PyPI
       run: hatch publish
-      env:
-        HATCH_INDEX_USER: ${{ secrets.HATCH_INDEX_USER }}
-        HATCH_INDEX_AUTH: ${{ secrets.HATCH_INDEX_AUTH }}
