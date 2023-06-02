@@ -83,7 +83,7 @@ def execute(args):
             os.chdir(clone_dir)
             make_call("git", "init")
         else:
-            make_call("git", "clone", new_repo, clone_dir)
+            make_call("git", "clone", "--no-tags", new_repo, clone_dir)
             os.chdir(clone_dir)
 
     if int(make_call("git", "rev-list", "--all", "--count")):
@@ -93,10 +93,10 @@ def execute(args):
     make_call("git", "remote", "add", "template", template_repo)
 
     if is_sha1(template_branch):
-        make_call("git", "fetch", "template", template_branch)
+        make_call("git", "fetch", "--no-tags", "template", template_branch)
         make_call("git", "checkout", "--orphan", new_root_branch, template_branch)
     else:
-        make_call("git", "fetch", "template")
+        make_call("git", "fetch", "--no-tags", "template")
         make_call("git", "checkout", "--orphan", new_root_branch, f"template/{template_branch}")
 
     make_call("git", "add", "-A")
