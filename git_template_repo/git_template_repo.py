@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 import sys
+import pathlib
 
 from ._version import version as __version__
 
@@ -21,17 +22,24 @@ def make_call(*args, error_msg=None, suppress_output=True):
             print(error_msg)
             print("")
         print(e)
-        raise e
+        sys.exit()
 
 
 def is_sha1(sha):
     match = re.match(r'\b[0-9a-f]{40}\b', sha)
     return match is not None
 
+def is_remote(location):
+    if "https://" in location or "http://" in location or "ssh://" in location:
+        return True
+    return False
 
 def execute(args):
     new_repo = args.new_repo
     template_repo = args.template_repo
+
+    if not is_remote(template_repo):
+        template_repo = pathlib.Path(template_repo).resolve()
 
     clone_dir = args.clone_dir
     new_root_branch = args.new_root
@@ -48,7 +56,7 @@ def execute(args):
               suppress_output=False)
 
     local_new = True
-    if push_origin or "https://" in new_repo or "http://" in new_repo or "ssh://" in new_repo:
+    if push_origin or is_remote(new_repo):
         local_new = False
 
     if local_new:

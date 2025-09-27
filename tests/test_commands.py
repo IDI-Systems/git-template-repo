@@ -71,6 +71,15 @@ class UnitTests(unittest.TestCase):
         self.assertIsDir(TEST_REPO_DIR_GIT)
         self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_REPO_DIR_GIT), "rev-list", "--all", "--count")), 1)
 
+    def test_template_from_local_commit_relative_path(self):
+        sha = git_template_repo.make_call("git", "rev-parse", "--verify", "HEAD").decode()[:-1]
+        sys.argv = ["git-template-repo", str(TEST_REPO_DIR), ".", "--template-branch", sha]
+        ret = git_template_repo.main()
+        self.assertEqual(ret, 0)
+        self.assertIsDir(TEST_REPO_DIR)
+        self.assertIsDir(TEST_REPO_DIR_GIT)
+        self.assertEqual(int(git_template_repo.make_call("git", "--git-dir", str(TEST_REPO_DIR_GIT), "rev-list", "--all", "--count")), 1)
+
     def test_template_push(self):
         git_template_repo.make_call("git", "init", str(TEST_DIR), "--bare")
         self.assertIsDir(TEST_DIR)
